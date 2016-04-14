@@ -68,18 +68,20 @@ class DropoutLayer(Layer):
         deterministic : bool
             If true dropout and scaling is disabled, see notes
         """
+        from .. import utils
         if deterministic or self.p == 0:
             return input
         else:
-            retain_prob = 1 - self.p
+            retain_prob = utils.floatX(1.) - self.p
             if self.rescale:
                 # According to pull-request 595 from eduardo4jesus
                 # It needs a proper call in case the input is an sparse variable
                 if type(input) == S.basic.SparseVariable:
-                    input = S.basic.mul(input, 1/retain_prob)
+                    input = S.basic.mul(input, utils.floatX(1.)/retain_prob)
                 else:
                     input /= retain_prob
 
+            print("input dtype: %s" % input.dtype)
             # use nonsymbolic shape for dropout mask if possible
             input_shape = self.input_shape
             if any(s is None for s in input_shape):
