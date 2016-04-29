@@ -81,7 +81,6 @@ class DropoutLayer(Layer):
                 else:
                     input /= retain_prob
 
-            print("input dtype: %s" % input.dtype)
             # use nonsymbolic shape for dropout mask if possible
             input_shape = self.input_shape
             if any(s is None for s in input_shape):
