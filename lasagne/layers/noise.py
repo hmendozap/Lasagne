@@ -1,5 +1,6 @@
 import theano
 import theano.sparse as S
+import theano.tensor as T
 
 from .base import Layer
 from ..random import get_rng
@@ -72,12 +73,15 @@ class DropoutLayer(Layer):
         if deterministic or self.p == 0:
             return input
         else:
-            retain_prob = utils.floatX(1.) - self.p
+            # Using theano constant to prevent upcasting
+            one = T.constant(1)
+
+            retain_prob = one - self.p
             if self.rescale:
                 # According to pull-request 595 from eduardo4jesus
                 # It needs a proper call in case the input is an sparse variable
                 if type(input) == S.basic.SparseVariable:
-                    input = S.basic.mul(input, utils.floatX(1.)/retain_prob)
+                    input = S.basic.mul(input, one/retain_prob)
                 else:
                     input /= retain_prob
 
