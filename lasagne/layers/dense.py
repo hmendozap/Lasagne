@@ -89,8 +89,8 @@ class DenseLayer(Layer):
         # Though it might be the case, the activation layer will remain
         # dense since Weights represent dense matrix ( Kinda makes sense)
 
-        if (type(input) == S.basic.SparseVariable) or (type(input) == S.basic.SparseConstant):
-            activation = S.basic.dot(input, self.W)
+        if (type(input) == S.SparseVariable) or (type(input) == S.SparseConstant):
+            activation = S.dot(input, self.W)
         else:
             activation = T.dot(input, self.W)
         if self.b is not None:

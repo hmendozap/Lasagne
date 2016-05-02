@@ -80,8 +80,8 @@ class DropoutLayer(Layer):
             if self.rescale:
                 # According to pull-request 595 from eduardo4jesus
                 # It needs a proper call in case the input is an sparse variable
-                if type(input) == S.basic.SparseVariable:
-                    input = S.basic.mul(input, one/retain_prob)
+                if type(input) == S.SparseVariable:
+                    input = S.mul(input, utils.floatX(1.)/retain_prob)
                 else:
                     input /= retain_prob
 
