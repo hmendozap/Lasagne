@@ -217,7 +217,7 @@ class LeakyRectify(object):
         self.leakiness = leakiness
 
     def __call__(self, x):
-        return theano.tensor.nnet.relu(x, self.leakiness)
+        return theano.tensor.nnet.relu(x, theano.tensor.as_tensor_variable(self.leakiness))
 
 
 leaky_rectify = LeakyRectify()  # shortcut with default leakiness
